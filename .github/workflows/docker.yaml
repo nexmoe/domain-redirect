@@ -10,10 +10,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       -
-        name: Get commit hash
-        id: commit
-        run: echo "commit=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
-      -
         name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
@@ -30,4 +26,4 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           push: true
-          tags: nexmoe/domain-redirect:${{ steps.commit.outputs.commit }}
+          tags: nexmoe/domain-redirect:${{ github.sha }}
