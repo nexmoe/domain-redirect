@@ -26,4 +26,6 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           push: true
-          tags: nexmoe/domain-redirect:${{ github.sha }}
+          tags: |
+            nexmoe/domain-redirect:latest
+            nexmoe/domain-redirect:${{ github.sha }}
