@@ -23,7 +23,7 @@ DOMAIN_MAPPING_<任意名称>=<域名>-><目标地址1>,<目标地址2>,...
 例如：
 
 ```
-DOMAIN_MAPPING_EXAMPLE=example.com->https://target1.com,https://target2.com
+DOMAIN_MAPPING_1=example.com->https://target1.com,https://target2.com
 ```
 
 ### 其他环境变量
@@ -35,19 +35,54 @@ DOMAIN_MAPPING_EXAMPLE=example.com->https://target1.com,https://target2.com
 
 ### Docker 部署
 
-1. 构建镜像：
+1. 拉取镜像：
+
+```bash
+docker pull nexmoe/domain-redirect
+```
+
+2. 构建镜像（可选）：
 
 ```bash
 docker build -t domain-redirect .
 ```
 
-2. 运行容器：
+3. 运行容器：
 
 ```bash
 docker run -d \
   -p 8080:8080 \
-  -e DOMAIN_MAPPING_EXAMPLE=example.com->https://target1.com,https://target2.com \
-  domain-redirect
+  -e DOMAIN_MAPPING_1=example.com->https://target1.com,https://target2.com \
+  nexmoe/domain-redirect
+```
+
+### Docker Compose 部署
+
+1. 创建 `docker-compose.yml` 文件：
+
+```yaml
+version: '3'
+services:
+  domain-redirect:
+    image: nexmoe/domain-redirect
+    container_name: domain-redirect
+    ports:
+      - "8080:8080"
+    environment:
+      - DOMAIN_MAPPING_1=example.com->https://target1.com,https://target2.com
+    restart: unless-stopped
+```
+
+2. 启动服务：
+
+```bash
+docker-compose up -d
+```
+
+3. 停止服务：
+
+```bash
+docker-compose down
 ```
 
 ### 直接运行
@@ -61,7 +96,7 @@ go build -o domain-redirect main.go
 2. 运行：
 
 ```bash
-export DOMAIN_MAPPING_EXAMPLE=example.com->https://target1.com,https://target2.com
+export DOMAIN_MAPPING_1=example.com->https://target1.com,https://target2.com
 ./domain-redirect
 ```
 
@@ -70,7 +105,7 @@ export DOMAIN_MAPPING_EXAMPLE=example.com->https://target1.com,https://target2.c
 假设配置了以下映射：
 
 ```
-DOMAIN_MAPPING_EXAMPLE=example.com->https://target1.com,https://target2.com
+DOMAIN_MAPPING_1=example.com->https://target1.com,https://target2.com
 ```
 
 当访问 `http://example.com/any/path` 时，服务会：
