@@ -30,6 +30,8 @@ DOMAIN_MAPPING_1=example.com->https://target1.com,https://target2.com
 
 - `PORT`: 服务监听端口，默认为 8080
 - `PRESERVE_PATH`: 是否保持原始路径，默认为 false。设置为 "true" 时，重定向时会保留原始请求路径。
+- `INCLUDE_REFERRAL`: 是否在重定向时携带来源域名信息，默认为 false。设置为 "true" 时，重定向时会添加 ref 参数，值为来源域名。
+- `ENABLE_TIMESTAMP`: 是否启用时间戳参数，默认为 false。设置为 "true" 时，重定向时会添加 _t 参数。
 
 ## 部署方式
 
@@ -113,7 +115,8 @@ DOMAIN_MAPPING_1=example.com->https://target1.com,https://target2.com
 1. 在目标地址之间轮询选择
 2. 将请求重定向到选中的目标地址
 3. 保持原始路径（如果配置了 PRESERVE_PATH 为 true）
-4. 添加时间戳参数防止缓存
+4. 添加时间戳参数防止缓存（如果配置了 ENABLE_TIMESTAMP 为 true）
+5. 添加来源域名信息（如果配置了 INCLUDE_REFERRAL 为 true）
 
 ## 注意事项
 

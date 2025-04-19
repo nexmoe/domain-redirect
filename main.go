@@ -96,9 +96,17 @@ func main() {
 				targetURL.Path = path
 			}
 			
-			// Add cache prevention parameter
+			// Add cache prevention parameter if enabled
 			query := targetURL.Query()
-			query.Set("_t", fmt.Sprintf("%d", time.Now().UnixNano()))
+			if os.Getenv("ENABLE_TIMESTAMP") == "true" {
+				query.Set("_t", fmt.Sprintf("%d", time.Now().UnixNano()))
+			}
+			
+			// Add referral information if enabled
+			if os.Getenv("INCLUDE_REFERRAL") == "true" {
+				query.Set("ref", r.Host)
+			}
+			
 			targetURL.RawQuery = query.Encode()
 			
 			// Redirect
